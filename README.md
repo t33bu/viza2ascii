@@ -5,7 +5,7 @@ This simple script converts Commodore 64 Vizawrite word processing software file
 
 Works with python version 3. Pardon my python skills.. :-)
 
-The Vizawrite files must be in PRG format that can be exported from, for example, d64 files. The script automatically removes the first two bytes of the PRG file. 
+The Vizawrite files must be in PRG format that can be exported from, for example, d64 files. The script automatically removes the first two bytes of the PRG file. Unknown (control) characters are outputted as hexadecimal numbers. 
 
 Usage: python viza2ascii.py filename.prg  
 Then the script outputs file filename.txt

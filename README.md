@@ -1,5 +1,9 @@
 # viza2ascii
-This simple script converts Commodore 64 Vizawrite word processing software files to readable ASCII. Works with python version 3. Pardon my python skills.. :-)
+This simple script converts Commodore 64 Vizawrite word processing software files to readable ASCII. 
+
+![Demo](https://github.com/t33bu/viza2ascii/blob/master/helloworld.png)
+
+Works with python version 3. Pardon my python skills.. :-)
 
 The Vizawrite files must be in PRG format that can be exported from, for example, d64 files. The script automatically removes the first two bytes of the PRG file. 
 

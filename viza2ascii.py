@@ -10,8 +10,9 @@
 # https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 import sys
+import os
 
-ctrl = { 
+controls = { 
         0x0d: '\n',
         0x20: ' ',
         0x21: '!',
@@ -51,43 +52,60 @@ locals = {
          0x79: 'ä'
          }
 
-if len(sys.argv) != 2:
-    sys.exit("ERROR: Input filename not given")
+#
+# convert a file
+#
 
-filename = sys.argv[1]
-print("Processing " + filename)
+def convert(filename):
+    print("Processing " + filename)
+    filein = open(filename,"rb")
+    document = list(filein.read())
+    document = document[2:] # get rid of prg-format header
+    filein.close()
+    
+    ascii = []
+    
+    for d in document:
+        # a-z
+        if d > 0x00 and d < 0x1b:
+            ascii.append(chr(d+0x60))
+        # 0-9
+        elif d > 0x29 and d < 0x3a:
+            ascii.append(chr(d))
+        # A-Z
+        elif d > 0x40 and d < 0x5b:
+            ascii.append(chr(d))
+        # localized keys
+        elif d in locals:
+            ascii.append(locals[d])
+        # control characters
+        elif d in controls:
+            ascii.append(controls[d])  
+        # if all else fails
+        else:
+            ascii.append("["+hex(d)+"]")
+    
+    outfilename = filename.split('.')[0] + ".txt"
+    print("Writing to " + outfilename)
+    
+    fileout = open(outfilename,"wb")
+    fileout.write(bytes("".join(ascii),'utf-8'))
+    fileout.close()
 
-filein = open(filename,"rb")
-document = list(filein.read())
-document = document[2:] # get rid of prg-format
-filein.close()
+#
+# main program    
+#
+    
+# convert all prg-files in current directory
+if len(sys.argv) == 1:
+    for filename in os.listdir(os.getcwd()):
+        if filename.endswith("prg"):
+            convert(filename)
+# convert named prg-files
+else:
+    for filename in sys.argv:
+        if filename.endswith("prg"):
+            convert(filename)
 
-ascii = []
 
-for d in document:
-    # a-z
-    if d > 0x00 and d < 0x1b:
-        ascii.append(chr(d+0x60))
-    # 0-9
-    elif d > 0x29 and d < 0x3a:
-        ascii.append(chr(d))
-    # A-Z
-    elif d > 0x40 and d < 0x5b:
-        ascii.append(chr(d))
-    # localized keys
-    elif d in locals:
-        ascii.append(locals[d])
-    # control characters
-    elif d in ctrl:
-        ascii.append(ctrl[d])  
-    # if all else fails
-    else:
-        ascii.append("["+hex(d)+"]")
-
-outfilename = filename.split('.')[0] + ".txt"
-print("Writing to " + outfilename)
-
-fileout = open(outfilename,"wb")
-fileout.write(bytes("".join(ascii),'utf-8'))
-fileout.close()
         

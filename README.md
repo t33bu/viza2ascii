@@ -1,5 +1,5 @@
 # viza2ascii
-This simple script converts Commodore 64 Vizawrite word processing software files to readable ASCII. 
+This simple script converts Commodore 64 Vizawrite word processing software files to readable ASCII (UTF-8). 
 
 ![Demo](https://github.com/t33bu/viza2ascii/blob/master/helloworld.png)
 
